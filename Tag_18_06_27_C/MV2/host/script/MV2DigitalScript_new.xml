@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scripts>
+
+	<!-- Initialization script -->
+	<initialization>
+	
+		<!-- Set digital mode -->
+		<command>
+			<type>C1</type>
+			<value>00</value>
+		</command>
+		
+		<!-- Initialize register 0
+			Bit Description					Value
+			7	Measurement Axis MSB 		0	3 Axes
+			6	Measurement Axis LSB		0
+			5	Resolution MSB			 	0	3 kHz (14 bits)
+			4	Resolution LSB				0
+			3	Range MSB					0	+-300 mT
+			2	Range LSB					1
+			1	Output Selection MSB		0	BX
+			0	Output Selection LSB		0
+		-->
+		<command>
+			<type>2C</type>
+			<value>fish</value>
+		</command>
+		
+		<!-- Initialize register 1
+			Bit Description					Value
+			7	Large Measurement Range		0
+			6	Spinning Current			0
+			5	Extended Measurement Range 	0
+			4	High Clock					0	
+			3	Invert						0
+			2	Low Power					0
+			1	Permanent Output			1	Permanently activate MISO (reduce power consumption)
+			0	Status Position				0
+		-->
+		<command>
+			<type>2D</type>
+			<value>02</value>
+		</command>
+		
+		<!-- Initialize register 2
+			Bit Description					Value
+			7	Disable separate bias		0
+			6	Temperature compensation 3	0	Default value
+			5	Temperature compensation 2	0
+			4	Temperature compensation 1	0	
+			3	Temperature compensation 0	1
+			2	Test System Clock			0
+			1	Unused						0
+			0	Unused						0
+		-->
+		<command>
+			<type>2E</type>
+			<value>08</value>
+		</command>
+		
+	</initialization>
+	
+	<!-- Measurement script -->
+	<measurement repeat="0">
+	
+		<!-- Loop to acquire samples -->
+		<loop count="10" average="false">
+		
+			<!-- Wait for DR -->
+			<command>
+				<type>02</type>
+				<value>00</value>
+			</command>
+		
+			<!-- Read BX and select BY
+				Bit Description					Value
+				7	Measurement Axis MSB 		0	3 Axes
+				6	Measurement Axis LSB		0
+				5	Resolution MSB			 	0	3 kHz (14 bits)
+				4	Resolution LSB				0
+				3	Range MSB					0	+-300 mT
+				2	Range LSB					1
+				1	Output Selection MSB		0	BY
+				0	Output Selection LSB		1
+			-->
+			<command outputIndex="0" outputName="Bx">
+				<type>2C</type>
+				<value>05</value>
+			</command>
+		
+			<!-- Read BY and select BZ
+				Bit Description					Value
+				7	Measurement Axis MSB 		0	3 Axes
+				6	Measurement Axis LSB		0
+				5	Resolution MSB			 	0	3 kHz (14 bits)
+				4	Resolution LSB				0
+				3	Range MSB					0	+-300 mT
+				2	Range LSB					1
+				1	Output Selection MSB		1	BZ
+				0	Output Selection LSB		0
+			-->
+			<command outputIndex="1" outputName="By">
+				<type>2C</type>
+				<value>06</value>
+			</command>
+		
+			<!-- Read BZ and select Temperature
+				Bit Description					Value
+				7	Measurement Axis MSB 		0	3 Axes
+				6	Measurement Axis LSB		0
+				5	Resolution MSB			 	0	3 kHz (14 bits)
+				4	Resolution LSB				0
+				3	Range MSB					0	+-300 mT
+				2	Range LSB					1
+				1	Output Selection MSB		1	Temperature
+				0	Output Selection LSB		1
+			-->
+			<command outputIndex="2" outputName="Bz">
+				<type>2C</type>
+				<value>07</value>
+			</command>
+		
+			<!-- Read Temperature and select BX
+				Bit Description					Value
+				7	Measurement Axis MSB 		0	3 Axes
+				6	Measurement Axis LSB		0
+				5	Resolution MSB			 	0	3 kHz (14 bits)
+				4	Resolution LSB				0
+				3	Range MSB					0	+-300 mT
+				2	Range LSB					1
+				1	Output Selection MSB		0	BX
+				0	Output Selection LSB		0
+			-->
+			<command outputIndex="3" outputName="Temperature">
+				<type>2C</type>
+				<value>04</value>
+			</command>
+			
+		</loop>
+		
+	</measurement>
+	
+</scripts>

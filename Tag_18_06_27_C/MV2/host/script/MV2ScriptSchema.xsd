@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<!-- Declare elements -->
+	<xsd:element name="command">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="type" type="xsd:hexBinary" minOccurs="1" maxOccurs="1"></xsd:element>
+				<xsd:element name="value" type="xsd:hexBinary" minOccurs="1" maxOccurs="1"></xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="outputIndex" type="xsd:integer" default="-1"></xsd:attribute>
+			<xsd:attribute name="outputName" type="xsd:string" default="unknown"></xsd:attribute>	
+		</xsd:complexType>	
+	</xsd:element>
+	
+	<xsd:element name="loop">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+			</xsd:sequence>	
+			<xsd:attribute name="count" type="xsd:unsignedByte" use="required"></xsd:attribute>
+			<xsd:attribute name="average" type="xsd:boolean" use="required"></xsd:attribute>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<!-- XML schema -->
+	<xsd:element name="scripts">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="initialization">
+					<xsd:complexType>
+						<xsd:choice maxOccurs="unbounded">
+							<xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+							<xsd:element ref="loop" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="measurement">
+					<xsd:complexType>
+						<xsd:choice maxOccurs="unbounded">
+							<xsd:element ref="command" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+							<xsd:element ref="loop" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+						</xsd:choice>
+						<xsd:attribute name="repeat" type="xsd:nonNegativeInteger" use="required"></xsd:attribute>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

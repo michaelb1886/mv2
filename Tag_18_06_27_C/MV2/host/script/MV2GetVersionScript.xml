@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scripts>
+
+	<!-- Initialization script -->
+	<initialization>
+		
+	</initialization>
+	
+	<!-- Measurement script -->
+	<measurement repeat="1">
+		
+		<!-- Get MV2 firmware version encoded in BCD format -->
+		<command outputIndex="0" outputName="Version">
+			<type>C4</type>
+			<value>00</value>
+		</command>
+		
+	</measurement>
+	
+</scripts>
