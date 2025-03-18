@@ -2,12 +2,12 @@ import subprocess
 import os, sys, re
 
 exePath = "Tag_18_06_27_C/MV2/binaries/linux/MV2Host"
-schemaXMFile = "Tag_18_06_27_C/MV2/host/script/MV2ScriptSchema.xsd"
+schemaXMLFile = "Tag_18_06_27_C/MV2/host/script/MV2ScriptSchema.xsd"
 comPort = "/dev/ttyUSB0"
 mxrFolderPath = "./mxr_files/"
 
-def getDigitalBField(scriptXMLFile, schemaXMFile=schemaXMFile):
-    result = subprocess.call([exePath, scriptXMLFile, schemaXMFile, comPort, getNewMXRPath()])
+def getDigitalBField(scriptXMLFile, schemaXMLFile=schemaXMLFile):
+    result = subprocess.call([exePath, scriptXMLFile, schemaXMLFile, comPort, getNewMXRPath()])
     return result
 
 def modifyScriptXML(scriptXMLFile, newScriptXMLFile, changes={}):
