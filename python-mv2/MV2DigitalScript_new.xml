@@ -23,7 +23,7 @@
 		-->
 		<command>
 			<type>2C</type>
-			<value>fish</value>
+			<value>02</value>
 		</command>
 		
 		<!-- Initialize register 1
@@ -85,7 +85,7 @@
 			-->
 			<command outputIndex="0" outputName="Bx">
 				<type>2C</type>
-				<value>05</value>
+				<value>10</value>
 			</command>
 		
 			<!-- Read BY and select BZ
@@ -101,7 +101,7 @@
 			-->
 			<command outputIndex="1" outputName="By">
 				<type>2C</type>
-				<value>06</value>
+				<value>11</value>
 			</command>
 		
 			<!-- Read BZ and select Temperature
@@ -117,7 +117,7 @@
 			-->
 			<command outputIndex="2" outputName="Bz">
 				<type>2C</type>
-				<value>07</value>
+				<value>12</value>
 			</command>
 		
 			<!-- Read Temperature and select BX
@@ -133,7 +133,7 @@
 			-->
 			<command outputIndex="3" outputName="Temperature">
 				<type>2C</type>
-				<value>04</value>
+				<value>13</value>
 			</command>
 			
 		</loop>
