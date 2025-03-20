@@ -85,7 +85,7 @@
 			-->
 			<command outputIndex="0" outputName="Bx">
 				<type>2C</type>
-				<value>31</value>
+				<value>30</value>
 			</command>
 		
 			<!-- Read BY and select BZ
@@ -101,7 +101,7 @@
 			-->
 			<command outputIndex="1" outputName="By">
 				<type>2C</type>
-				<value>32</value>
+				<value>31</value>
 			</command>
 		
 			<!-- Read BZ and select Temperature
@@ -117,7 +117,7 @@
 			-->
 			<command outputIndex="2" outputName="Bz">
 				<type>2C</type>
-				<value>30</value>
+				<value>32</value>
 			</command>
 		
 			<!-- Read Temperature and select BX

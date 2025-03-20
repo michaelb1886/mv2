@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MetrolabXmlRecord ver="1.0">
+  <header>
+    <src>MV2 Host Software</src>
+    <datTim8601>2025-03-20T14:42:37</datTim8601>
+    <descr>Results from MV2</descr>
+  </header>
+  <body type="tMXR_BODY_MV2" ver="1.0">
+    <dataset type="tMXR_DATASET_MV2_MEASUREMENT" ver="1.0">
+      <headings>Bx,By,Bz</headings>
+      <meas>32492,32870,32895
+</meas>
+    </dataset>
+  </body>
+</MetrolabXmlRecord>

@@ -3,25 +3,34 @@ import os, sys, re
 
 exePath = "Tag_18_06_27_C/MV2/binaries/linux/MV2Host"
 schemaXMLFile = "Tag_18_06_27_C/MV2/host/script/MV2ScriptSchema.xsd"
-comPort = "/dev/ttyUSB0"
+comPort = "/dev/ttyACM0"
 mxrFolderPath = "./mxr_files/"
 
-def getDigitalBField(scriptXMLFile, schemaXMLFile=schemaXMLFile):
-    result = subprocess.call([exePath, scriptXMLFile, schemaXMLFile, comPort, getNewMXRPath()])
-    return result
+def applyScriptMV2Host(scriptXMLFile, schemaXMLFile=schemaXMLFile):
+    result = subprocess.check_output([exePath, scriptXMLFile, schemaXMLFile, comPort, getNewMXRPath()])
+    return [int(x) for x in result.decode("utf-8").rstrip().split(',')]
 
-def modifyScriptXML(scriptXMLFile, newScriptXMLFile, changes={}):
+def modifyScriptXML(scriptXMLFile, newScriptXMLFile, keys=[], values=[]):
     with open(scriptXMLFile, 'r') as f:
         lines = f.readlines()
-    for key, value in changes.items():
-        modifyXMLsnippet(key,value,lines)
+    modifyXMLsnippet(keys,values,lines)
     with open(newScriptXMLFile, 'w') as f:
         f.writelines(lines)
+
+def modifyXMLsnippet(types,values,lines):
+    k = 0
+    for i,line in enumerate(lines):
+        m = re.search(f"<type>{types[k]}</type>",line)
+        if m:
+            lines[i+1] = re.sub("<value>.*</value>",f"<value>{values[k]}</value>",lines[i+1])
+            k += 1
+            if k == len(types):
+                break
 
 def makeDigitalRegister(settings):
     
     """
-    measurement range table
+    measurement axis table
     bit 0 | bit 1 | option
     =======================
     0     | 0     |  Bx
@@ -43,7 +52,7 @@ def makeDigitalRegister(settings):
     
     
     """
-    sensings range table
+    sensing range table
     bit 0 | bit 1 | range | option
     ===============================
     0     | 0     | 0.1 T |   0
@@ -110,13 +119,8 @@ def makeDigitalRegister(settings):
         case _:
             raise ValueError("Invalid measurement axis")
     
-    return register4<<6 | register3<<4 | register2<<2 | register1
-    
-def modifyXMLsnippet(type,value,lines):
-    for i,line in enumerate(lines):
-        m = re.search(f"<type>{type}</type>",line)
-        if m:
-            lines[i+1] = re.sub("<value>.*</value>",f"<value>{value}</value>",lines[i+1])
+    return hex(register4<<6 | register3<<4 | register2<<2 | register1)
+              
 
 def getNewMXRPath(name=None,mxrFolderPath=mxrFolderPath):
     if name is None:
@@ -135,5 +139,29 @@ def getNewMXRPath(name=None,mxrFolderPath=mxrFolderPath):
         return mxrFolderPath + "newMXR_" + str(i) + ".mxr"
 
 if __name__ == "__main__":
-    print(bin(makeRegister({"output":3,"sensing_range":2,"resolution":2,"measurement_axis":"Bx"})))
+    for axis in ["Bx", "By", "Bz"]:
+        print(f"axis: {axis}\thex:{makeDigitalRegister({"output":3,
+                                   "sensing_range":0,
+                                   "resolution":3,
+                                   "measurement_axis":axis})}")
 
+    # x = applyScriptMV2Host("python-mv2/MV2DigitalScript_new.xml")
+
+    modifyScriptXML("python-mv2/MV2DigitalScript_new.xml","python-mv2/MV2DigitalScript_temp.xml",
+                    keys=["2C"]*4,
+                    values=[str(makeDigitalRegister({"output":3,
+                                                    "sensing_range":0,
+                                                    "resolution":3,
+                                                    "measurement_axis":"Bx"}))[-2:],
+                            str(makeDigitalRegister({"output":3,
+                                                    "sensing_range":0,
+                                                    "resolution":3,
+                                                    "measurement_axis":"Bx"}))[-2:],
+                            str(makeDigitalRegister({"output":3,
+                                                    "sensing_range":0,
+                                                    "resolution":3,
+                                                    "measurement_axis":"By"}))[-2:],
+                            str(makeDigitalRegister({"output":3,
+                                                    "sensing_range":0,
+                                                    "resolution":3,
+                                                    "measurement_axis":"Bz"}))[-2:]])
