@@ -18,7 +18,7 @@ def modifyScriptXML(scriptXMLFile, newScriptXMLFile, changes={}):
     with open(newScriptXMLFile, 'w') as f:
         f.writelines(lines)
 
-def makeRegister(settings):
+def makeDigitalRegister(settings):
     
     """
     measurement range table
@@ -110,10 +110,8 @@ def makeRegister(settings):
         case _:
             raise ValueError("Invalid measurement axis")
     
-    return register1<<6 | register2<<4 | register3<<2 | register4
+    return register4<<6 | register3<<4 | register2<<2 | register1
     
-
-
 def modifyXMLsnippet(type,value,lines):
     for i,line in enumerate(lines):
         m = re.search(f"<type>{type}</type>",line)
@@ -137,4 +135,5 @@ def getNewMXRPath(name=None,mxrFolderPath=mxrFolderPath):
         return mxrFolderPath + "newMXR_" + str(i) + ".mxr"
 
 if __name__ == "__main__":
-    makeRegister({"measurement_range":"Bx","sensing_range":0,"resolution":0,"measurement_axis":3})
+    print(bin(makeRegister({"output":3,"sensing_range":2,"resolution":2,"measurement_axis":"Bx"})))
+
